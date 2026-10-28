@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_sankhya" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+  <property name="ireport.zoom" value="1.0"/>
+  <property name="ireport.x" value="0"/>
+  <property name="ireport.y" value="0"/>
+  <parameter name="PK_NUNOTA" class="java.math.BigDecimal"/>
+  <parameter name="PDIR_MODELO" class="java.lang.String"/>
+  <queryString>
+    <![CDATA[SELECT CAB.NUNOTA, CAB.NUMNOTA, CAB.DTNEG, PAR.CODPARC, PAR.RAZAOSOCIAL AS NOMEPARC, CAB.VLRNOTA FROM TGFCAB CAB INNER JOIN TGFPAR PAR ON (PAR.CODPARC = CAB.CODPARC) WHERE CAB.NUNOTA = $P{PK_NUNOTA}]]>
+  </queryString>
+  <field name="NUNOTA" class="java.math.BigDecimal"/>
+  <field name="NUMNOTA" class="java.math.BigDecimal"/>
+  <field name="DTNEG" class="java.sql.Timestamp"/>
+  <field name="CODPARC" class="java.math.BigDecimal"/>
+  <field name="NOMEPARC" class="java.lang.String"/>
+  <field name="VLRNOTA" class="java.math.BigDecimal"/>
+  <variable name="PAGE_NUMBER" class="java.lang.Integer" calculation="Nothing"/>
+  <variable name="REPORT_COUNT" class="java.lang.Integer" calculation="Count"/>
+  <title>
+    <band height="75" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="555" height="65" backcolor="#1E293B" mode="Opaque"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="15" y="12" width="350" height="25" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Left" verticalAlignment="Middle">
+          <font fontName="Arial" size="18" isBold="true"/>
+        </textElement>
+        <text><![CDATA[SANKHYA ERP - ESPELHO DE NOTA]]></text>
+      </staticText>
+    </band>
+  </title>
+  <pageHeader>
+    <band height="35" splitType="Stretch">
+      <staticText>
+        <reportElement x="0" y="8" width="60" height="18" forecolor="#334155"/>
+        <textElement verticalAlignment="Middle">
+          <font size="9" isBold="true"/>
+        </textElement>
+        <text><![CDATA[Cliente:]]></text>
+      </staticText>
+    </band>
+  </pageHeader>
+  <columnHeader>
+    <band height="26" splitType="Stretch">
+      <staticText>
+        <reportElement x="8" y="4" width="70" height="18" forecolor="#475569"/>
+        <textElement verticalAlignment="Middle">
+          <font size="8" isBold="true"/>
+        </textElement>
+        <text><![CDATA[NRO ÚNICO]]></text>
+      </staticText>
+    </band>
+  </columnHeader>
+  <detail>
+    <band height="24" splitType="Stretch">
+      <textField>
+        <reportElement x="8" y="2" width="70" height="18" forecolor="#1E293B"/>
+        <textElement verticalAlignment="Middle">
+          <font size="9"/>
+        </textElement>
+        <textFieldExpression><![CDATA[$F{NUNOTA}]]></textFieldExpression>
+      </textField>
+    </band>
+  </detail>
+  <columnFooter>
+    <band height="10" splitType="Stretch">
+    </band>
+  </columnFooter>
+  <pageFooter>
+    <band height="25" splitType="Stretch">
+      <staticText>
+        <reportElement x="0" y="8" width="250" height="14" forecolor="#94A3B8"/>
+        <textElement verticalAlignment="Middle">
+          <font size="8"/>
+        </textElement>
+        <text><![CDATA[Sankhya Gestão de Negócios - iReport Web Designer]]></text>
+      </staticText>
+    </band>
+  </pageFooter>
+  <summary>
+    <band height="40" splitType="Stretch">
+      <staticText>
+        <reportElement x="330" y="12" width="90" height="18" forecolor="#0F172A"/>
+        <textElement verticalAlignment="Middle">
+          <font size="9" isBold="true"/>
+        </textElement>
+        <text><![CDATA[TOTAL GERAL:]]></text>
+      </staticText>
+    </band>
+  </summary>
+</jasperReport>

@@ -1,0 +1,521 @@
+import { JRXMLElement, BandType } from '../types/jrxml';
+
+export interface SmartBlockDefinition {
+  id: string;
+  name: string;
+  description: string;
+  targetBand: BandType;
+  icon: string;
+  elements: (columnWidth: number) => JRXMLElement[];
+}
+
+export const SMART_BLOCKS: SmartBlockDefinition[] = [
+  {
+    id: 'block-header-company',
+    name: 'Cabeçalho Corporativo com Logo',
+    description: 'Logo, Título da Empresa, Subtítulo e Número Único da Nota',
+    targetBand: 'title',
+    icon: 'Building2',
+    elements: (columnWidth: number): JRXMLElement[] => [
+      {
+        id: `block-${Date.now()}-bg`,
+        type: 'rectangle',
+        reportElement: {
+          x: 0,
+          y: 0,
+          width: columnWidth,
+          height: 60,
+          backcolor: '#0F172A',
+          mode: 'Opaque',
+        },
+        radius: 4,
+        penWidth: 0,
+      },
+      {
+        id: `block-${Date.now()}-title`,
+        type: 'staticText',
+        reportElement: {
+          x: 16,
+          y: 12,
+          width: 320,
+          height: 22,
+          forecolor: '#FFFFFF',
+        },
+        textElement: {
+          textAlignment: 'Left',
+          verticalAlignment: 'Middle',
+          font: { fontName: 'Arial', size: 16, isBold: true },
+        },
+        text: 'NOME DA SUA EMPRESA S/A',
+      },
+      {
+        id: `block-${Date.now()}-sub`,
+        type: 'staticText',
+        reportElement: {
+          x: 16,
+          y: 35,
+          width: 320,
+          height: 15,
+          forecolor: '#94A3B8',
+        },
+        textElement: {
+          textAlignment: 'Left',
+          verticalAlignment: 'Middle',
+          font: { fontName: 'Arial', size: 9 },
+        },
+        text: 'CNPJ: 00.000.000/0001-00 • Telefone: (11) 4000-0000',
+      },
+      {
+        id: `block-${Date.now()}-box-nunota`,
+        type: 'staticText',
+        reportElement: {
+          x: columnWidth - 160,
+          y: 12,
+          width: 144,
+          height: 14,
+          forecolor: '#94A3B8',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 8, isBold: true },
+        },
+        text: 'NÚMERO ÚNICO',
+      },
+      {
+        id: `block-${Date.now()}-val-nunota`,
+        type: 'textField',
+        reportElement: {
+          x: columnWidth - 160,
+          y: 26,
+          width: 144,
+          height: 22,
+          forecolor: '#38BDF8',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 16, isBold: true },
+        },
+        expression: '$F{NUNOTA}',
+      },
+    ],
+  },
+  {
+    id: 'block-customer-card',
+    name: 'Card de Dados do Cliente',
+    description: 'Quadro com Código, Razão Social e Data de Emissão',
+    targetBand: 'pageHeader',
+    icon: 'UserCheck',
+    elements: (columnWidth: number): JRXMLElement[] => [
+      {
+        id: `block-${Date.now()}-box`,
+        type: 'rectangle',
+        reportElement: {
+          x: 0,
+          y: 4,
+          width: columnWidth,
+          height: 36,
+          backcolor: '#F8FAFC',
+          mode: 'Opaque',
+        },
+        radius: 3,
+        penWidth: 1,
+        penColor: '#E2E8F0',
+      },
+      {
+        id: `block-${Date.now()}-lbl-cli`,
+        type: 'staticText',
+        reportElement: {
+          x: 10,
+          y: 12,
+          width: 60,
+          height: 18,
+          forecolor: '#64748B',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 9, isBold: true },
+        },
+        text: 'CLIENTE:',
+      },
+      {
+        id: `block-${Date.now()}-val-cli`,
+        type: 'textField',
+        reportElement: {
+          x: 70,
+          y: 12,
+          width: 320,
+          height: 18,
+          forecolor: '#0F172A',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 9, isBold: true },
+        },
+        expression: '$F{CODPARC} + " - " + $F{NOMEPARC}',
+      },
+      {
+        id: `block-${Date.now()}-lbl-dt`,
+        type: 'staticText',
+        reportElement: {
+          x: columnWidth - 160,
+          y: 12,
+          width: 60,
+          height: 18,
+          forecolor: '#64748B',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 9, isBold: true },
+        },
+        text: 'EMISSÃO:',
+      },
+      {
+        id: `block-${Date.now()}-val-dt`,
+        type: 'textField',
+        reportElement: {
+          x: columnWidth - 95,
+          y: 12,
+          width: 85,
+          height: 18,
+          forecolor: '#0F172A',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 9 },
+        },
+        pattern: 'dd/MM/yyyy',
+        expression: '$F{DTNEG}',
+      },
+    ],
+  },
+  {
+    id: 'block-items-table-header',
+    name: 'Barra de Cabeçalho de Itens',
+    description: 'Títulos para Código, Descrição, Qtd, Vlr Unit e Total',
+    targetBand: 'columnHeader',
+    icon: 'ListFilter',
+    elements: (columnWidth: number): JRXMLElement[] => [
+      {
+        id: `block-${Date.now()}-th-bg`,
+        type: 'rectangle',
+        reportElement: {
+          x: 0,
+          y: 2,
+          width: columnWidth,
+          height: 22,
+          backcolor: '#F1F5F9',
+          mode: 'Opaque',
+        },
+        radius: 2,
+        penWidth: 1,
+        penColor: '#CBD5E1',
+      },
+      {
+        id: `block-${Date.now()}-th-c1`,
+        type: 'staticText',
+        reportElement: {
+          x: 8,
+          y: 4,
+          width: 60,
+          height: 16,
+          forecolor: '#475569',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 8, isBold: true },
+        },
+        text: 'CÓDIGO',
+      },
+      {
+        id: `block-${Date.now()}-th-c2`,
+        type: 'staticText',
+        reportElement: {
+          x: 75,
+          y: 4,
+          width: 240,
+          height: 16,
+          forecolor: '#475569',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 8, isBold: true },
+        },
+        text: 'DESCRIÇÃO DO PRODUTO',
+      },
+      {
+        id: `block-${Date.now()}-th-c3`,
+        type: 'staticText',
+        reportElement: {
+          x: 320,
+          y: 4,
+          width: 60,
+          height: 16,
+          forecolor: '#475569',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 8, isBold: true },
+        },
+        text: 'QTD',
+      },
+      {
+        id: `block-${Date.now()}-th-c4`,
+        type: 'staticText',
+        reportElement: {
+          x: 390,
+          y: 4,
+          width: 70,
+          height: 16,
+          forecolor: '#475569',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 8, isBold: true },
+        },
+        text: 'UNITÁRIO',
+      },
+      {
+        id: `block-${Date.now()}-th-c5`,
+        type: 'staticText',
+        reportElement: {
+          x: 470,
+          y: 4,
+          width: columnWidth - 478,
+          height: 16,
+          forecolor: '#475569',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 8, isBold: true },
+        },
+        text: 'TOTAL',
+      },
+    ],
+  },
+  {
+    id: 'block-items-table-row',
+    name: 'Linha de Dados dos Itens (Detail)',
+    description: 'Campos alinhados com o cabeçalho de itens e linha divisória',
+    targetBand: 'detail',
+    icon: 'TableProperties',
+    elements: (columnWidth: number): JRXMLElement[] => [
+      {
+        id: `block-${Date.now()}-td-c1`,
+        type: 'textField',
+        reportElement: {
+          x: 8,
+          y: 2,
+          width: 60,
+          height: 16,
+          forecolor: '#1E293B',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 9 },
+        },
+        expression: '$F{CODPROD}',
+      },
+      {
+        id: `block-${Date.now()}-td-c2`,
+        type: 'textField',
+        reportElement: {
+          x: 75,
+          y: 2,
+          width: 240,
+          height: 16,
+          forecolor: '#1E293B',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 9 },
+        },
+        expression: '$F{DESCRPROD}',
+      },
+      {
+        id: `block-${Date.now()}-td-c3`,
+        type: 'textField',
+        reportElement: {
+          x: 320,
+          y: 2,
+          width: 60,
+          height: 16,
+          forecolor: '#1E293B',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 9 },
+        },
+        pattern: '#,##0.00',
+        expression: '$F{QTDNEG}',
+      },
+      {
+        id: `block-${Date.now()}-td-c4`,
+        type: 'textField',
+        reportElement: {
+          x: 390,
+          y: 2,
+          width: 70,
+          height: 16,
+          forecolor: '#1E293B',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 9 },
+        },
+        pattern: '#,##0.00',
+        expression: '$F{VLRUNIT}',
+      },
+      {
+        id: `block-${Date.now()}-td-c5`,
+        type: 'textField',
+        reportElement: {
+          x: 470,
+          y: 2,
+          width: columnWidth - 478,
+          height: 16,
+          forecolor: '#0F172A',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 9, isBold: true },
+        },
+        pattern: '#,##0.00',
+        expression: '$F{VLRTOT}',
+      },
+      {
+        id: `block-${Date.now()}-td-line`,
+        type: 'line',
+        reportElement: {
+          x: 0,
+          y: 20,
+          width: columnWidth,
+          height: 1,
+          forecolor: '#E2E8F0',
+        },
+        penWidth: 0.5,
+      },
+    ],
+  },
+  {
+    id: 'block-totals-summary',
+    name: 'Quadro Resumo de Totais',
+    description: 'Caixa de destaque com Valor Total do Pedido/Nota',
+    targetBand: 'summary',
+    icon: 'BadgePercent',
+    elements: (columnWidth: number): JRXMLElement[] => [
+      {
+        id: `block-${Date.now()}-tot-box`,
+        type: 'rectangle',
+        reportElement: {
+          x: columnWidth - 260,
+          y: 6,
+          width: 260,
+          height: 32,
+          backcolor: '#F8FAFC',
+          mode: 'Opaque',
+        },
+        radius: 4,
+        penWidth: 1.5,
+        penColor: '#0284C7',
+      },
+      {
+        id: `block-${Date.now()}-tot-lbl`,
+        type: 'staticText',
+        reportElement: {
+          x: columnWidth - 250,
+          y: 12,
+          width: 100,
+          height: 20,
+          forecolor: '#0F172A',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 10, isBold: true },
+        },
+        text: 'TOTAL DA NOTA:',
+      },
+      {
+        id: `block-${Date.now()}-tot-val`,
+        type: 'textField',
+        reportElement: {
+          x: columnWidth - 140,
+          y: 11,
+          width: 130,
+          height: 22,
+          forecolor: '#0284C7',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 13, isBold: true },
+        },
+        pattern: '¤ #,##0.00',
+        expression: '$F{VLRNOTA}',
+      },
+    ],
+  },
+  {
+    id: 'block-page-footer',
+    name: 'Rodapé com Paginação e Auditoria',
+    description: 'Linha separadora, texto de sistema e contador de páginas',
+    targetBand: 'pageFooter',
+    icon: 'FileText',
+    elements: (columnWidth: number): JRXMLElement[] => [
+      {
+        id: `block-${Date.now()}-pf-line`,
+        type: 'line',
+        reportElement: {
+          x: 0,
+          y: 2,
+          width: columnWidth,
+          height: 1,
+          forecolor: '#CBD5E1',
+        },
+        penWidth: 1,
+      },
+      {
+        id: `block-${Date.now()}-pf-info`,
+        type: 'staticText',
+        reportElement: {
+          x: 0,
+          y: 6,
+          width: 280,
+          height: 14,
+          forecolor: '#94A3B8',
+        },
+        textElement: {
+          verticalAlignment: 'Middle',
+          font: { size: 8 },
+        },
+        text: 'Impresso via Sankhya Gestão de Negócios • iReport Web',
+      },
+      {
+        id: `block-${Date.now()}-pf-pg`,
+        type: 'textField',
+        reportElement: {
+          x: columnWidth - 160,
+          y: 6,
+          width: 160,
+          height: 14,
+          forecolor: '#94A3B8',
+        },
+        textElement: {
+          textAlignment: 'Right',
+          verticalAlignment: 'Middle',
+          font: { size: 8 },
+        },
+        expression: '"Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_NUMBER}',
+      },
+    ],
+  },
+];

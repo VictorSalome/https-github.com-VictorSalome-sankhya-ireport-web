@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://jasperreports.sourceforge.net/jasperreports"
+        xmlns:jr="http://jasperreports.sourceforge.net/jasperreports"
+        xmlns:c="http://jasperreports.sourceforge.net/jasperreports/components"
+        elementFormDefault="qualified">
+
+  <include schemaLocation="jasperreport.xsd" />
+  <import namespace="http://jasperreports.sourceforge.net/jasperreports/components" schemaLocation="components.xsd" />
+</schema>

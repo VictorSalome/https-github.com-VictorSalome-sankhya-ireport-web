@@ -1,0 +1,35 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Next.js build output
+.next/
+out/
+
+# Production
+build
+dist
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env*.local
+.env
+
+# Vercel
+.vercel
+
+# macOS system files
+.DS_Store
+*.pem
+
+# Temporary test files
+engine/temp_*.jrxml
